@@ -30,6 +30,7 @@ abstract class RecordMapperBase<T extends Record> extends InterfaceMapperBase<T>
       value,
       fields.values,
       ignoreNull,
+      ignore,
       context.change(args: () => apply(context)),
       context.options?.shallow ?? false,
     );

@@ -216,6 +216,7 @@ abstract class ClassMapperBase<T extends Object>
       value,
       _params,
       ignoreNull,
+      ignore,
       context,
       context.options?.shallow ?? shallowEncoding,
     );
