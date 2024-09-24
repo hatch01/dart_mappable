@@ -59,6 +59,11 @@ class ClassMapperGenerator extends MapperGenerator<TargetClassMapperElement>
       );
     }
 
+    if (element.ignore.isNotEmpty) {
+      output.write(
+          '  @override\n  final Iterable<String> ignore = const [${element.ignore.map((e) => "'$e'").join(', ')}];\n');
+    }
+
     if (element.isDiscriminatingSubclass) {
       await generateDiscriminatorFields(output);
       generateInheritOverride(output);
