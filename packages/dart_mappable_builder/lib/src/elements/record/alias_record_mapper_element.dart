@@ -51,6 +51,9 @@ abstract class AliasRecordMapperElement
     RecordMapperAnnotation super.annotation,
   );
 
+  late final Iterable<String> ignore =
+      annotation.value?.read('ignore')?.toStringList() ?? [];
+
   @override
   late final String className = element.name ?? '';
 

@@ -139,12 +139,23 @@ mixin DecodingMixin on MapperGenerator<TargetClassMapperElement> {
   Future<String> _generateConstructorParams() async {
     List<String> params = [];
     for (var param in element.params) {
+      var paramName = param.accessor?.name3 ?? param.parameter.name3;
+      
+      // Skip ignored parameters if they are optional or have defaults
+      if (element.ignore.contains(paramName)) {
+        if (param.parameter.hasDefaultValue || 
+            param.parameter.isOptional || 
+            (param.parameter.isNamed && !param.parameter.isRequiredNamed)) {
+          continue;
+        }
+      }
+      
       var str = '';
 
       if (param.parameter.isNamed) {
         str = '${param.parameter.name ?? ''}: ';
       }
-      str += 'data.dec(_f\$${param.accessor?.name ?? param.parameter.name})';
+      str += 'data.dec(_f\$${paramName})';
 
       params.add(str);
     }

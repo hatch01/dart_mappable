@@ -1,10 +1,21 @@
 import '../../elements/mapper_element.dart';
+import '../../elements/class/class_mapper_element.dart';
+import '../../elements/record/alias_record_mapper_element.dart';
 import '../generator.dart';
 
 extension FieldsExtension<T extends InterfaceMapperElement>
     on MapperGenerator<T> {
   Future<void> generateFields(StringBuffer output) async {
     var fields = element.fields;
+    
+    // Filter out ignored fields for ClassMapperElement and RecordMapperElement
+    if (element is ClassMapperElement) {
+      final classElement = element as ClassMapperElement;
+      fields = fields.where((f) => !classElement.ignore.contains(f.name)).toList();
+    } else if (element is AliasRecordMapperElement) {
+      final recordElement = element as AliasRecordMapperElement;
+      fields = fields.where((f) => !recordElement.ignore.contains(f.name)).toList();
+    }
 
     for (var f in fields) {
       if (f.needsGetter) {

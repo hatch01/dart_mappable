@@ -40,6 +40,15 @@ class RecordMapperGenerator extends MapperGenerator<RecordMapperElement> {
 
     await generateFields(output);
 
+    // Add ignore property if element has ignored fields
+    if (element is AliasRecordMapperElement) {
+      final aliasElement = element as AliasRecordMapperElement;
+      if (aliasElement.ignore.isNotEmpty) {
+        output.write(
+            '  @override\n  final Iterable<String> ignore = const [${aliasElement.ignore.map((e) => "'$e'").join(', ')}];\n');
+      }
+    }
+
     generateTypeFactory(output);
     generateApplyOverride(output);
     generateHook(output);
